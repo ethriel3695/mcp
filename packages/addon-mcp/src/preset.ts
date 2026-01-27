@@ -49,7 +49,8 @@ export const experimental_devServer: PresetPropertyFn<
 		let docsNotice = '';
 		if (!manifestStatus.hasManifests) {
 			docsNotice = `<div class="toolset-notice">
-				This toolset is only supported in React-based setups.
+				This toolset requires a framework with manifest support (React, Angular).
+				For Angular, ensure Compodoc is installed and run 'npx compodoc -p tsconfig.json' to generate documentation.
 			</div>`;
 		} else if (!manifestStatus.hasFeatureFlag) {
 			docsNotice = `<div class="toolset-notice">

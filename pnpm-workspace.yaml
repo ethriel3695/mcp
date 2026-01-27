@@ -50,3 +50,6 @@ catalogs:
 onlyBuiltDependencies:
   - '@swc/core'
   - esbuild
+
+overrides:
+  storybook: link:../storybook/code/core

@@ -91,6 +91,72 @@ const Doc = v.object({
 });
 export type Doc = v.InferOutput<typeof Doc>;
 
+/**
+ * Compodoc input/property schema for Angular components
+ */
+const CompodocInput = v.object({
+	name: v.string(),
+	type: v.string(),
+	description: v.optional(v.string()),
+	rawdescription: v.optional(v.string()),
+	defaultValue: v.optional(v.string()),
+	optional: v.boolean(),
+});
+
+/**
+ * Compodoc output schema for Angular components
+ */
+const CompodocOutput = v.object({
+	name: v.string(),
+	type: v.string(),
+	description: v.optional(v.string()),
+	rawdescription: v.optional(v.string()),
+});
+
+/**
+ * Compodoc method argument schema
+ */
+const CompodocMethodArg = v.object({
+	name: v.string(),
+	type: v.string(),
+	optional: v.optional(v.boolean()),
+});
+
+/**
+ * Compodoc method schema for Angular components
+ */
+const CompodocMethod = v.object({
+	name: v.string(),
+	description: v.optional(v.string()),
+	rawdescription: v.optional(v.string()),
+	args: v.array(CompodocMethodArg),
+	returnType: v.string(),
+});
+
+/**
+ * Compodoc data schema for Angular component documentation.
+ * Contains inputs, outputs, properties, and methods extracted by Compodoc.
+ */
+export const CompodocData = v.object({
+	name: v.string(),
+	selector: v.optional(v.string()),
+	description: v.optional(v.string()),
+	rawdescription: v.optional(v.string()),
+	file: v.optional(v.string()),
+	type: v.union([
+		v.literal('component'),
+		v.literal('directive'),
+		v.literal('pipe'),
+		v.literal('injectable'),
+		v.literal('class'),
+	]),
+	inputs: v.array(CompodocInput),
+	outputs: v.array(CompodocOutput),
+	properties: v.array(CompodocInput),
+	methods: v.array(CompodocMethod),
+});
+export type CompodocData = v.InferOutput<typeof CompodocData>;
+
 export const ComponentManifest = v.object({
 	...BaseManifest.entries,
 	id: v.string(),
@@ -100,6 +166,8 @@ export const ComponentManifest = v.object({
 	stories: v.optional(v.array(Story)),
 	// loose schema for react-docgen types, as they are pretty complex
 	reactDocgen: v.optional(v.custom<Documentation>(() => true)),
+	// Angular Compodoc documentation
+	compodocData: v.optional(CompodocData),
 	docs: v.optional(v.record(v.string(), Doc)),
 });
 export type ComponentManifest = v.InferOutput<typeof ComponentManifest>;
